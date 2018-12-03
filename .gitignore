@@ -5,3 +5,5 @@ Pipfile*
 *.tfvars
 variables.json
 variables.yml
+Gemfile*
+views/
