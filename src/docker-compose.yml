@@ -14,7 +14,7 @@ services:
     build: ./ui
     image: ${USERNAME}/ui:${UIVERSION}
     ports:
-      - ${UIPORT}:${UIPORT}/tcp
+      - 9292:9292/tcp
     networks:
       - front_end
     command: "puma --debug -w 2"  
