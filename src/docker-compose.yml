@@ -4,18 +4,18 @@ services:
     image: mongo:${MONGOVERSION}
     volumes:
       - post_db:${VOLUMEPATH}
-      networks:
-        back_end:
-          aliases:
-            - post_db
-            - comment_db
+    networks:
+      back_end:
+        aliases:
+          - post_db
+          - comment_db
   ui:
     build: ./ui
     image: ${USERNAME}/ui:${UIVERSION}
     ports:
       - 9292:9292/tcp
-      networks:
-        - front_end
+    networks:
+      - front_end
     command: "puma --debug -w 2"
   post:
     build: ./post-py
