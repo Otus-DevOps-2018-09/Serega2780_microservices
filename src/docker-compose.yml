@@ -35,4 +35,3 @@ volumes:
 networks:
   front_end:
   back_end:
-       

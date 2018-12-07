@@ -60,9 +60,10 @@ Docker-4
 
 Выполнено задание со *;
 С помощью sshfs, согласно документации Docker, подключил локальную папку ~./src2 (локальная машина) на docker-host (GCE)/home/docker-user/srс. Проверил, что папки синхронизированы, т.е. при изменении локальной папки scr2, изменяется содержимое и удаленной папки;
+docker-machine mount docker-host:/home/docker-user/src /home/sss/HW_15/Serega2780_microservices/src2/ 
 В файле docker-compose.override.yml добавил volumes для каждого из сервисов:
- - ui, volume: /home/docker-user/src/ui;
- - post, volume: /home/docker-user/src/post;
- - comment, volume: /home/docker-user/src/comment.
+ - ui, volume: /home/docker-user/src/ui -> /app;
+ - post, volume: /home/docker-user/src/post -> /app;
+ - comment, volume: /home/docker-user/src/comment -> /app.
 
 Puma запускается в debug режиме с двумя воркерамии. 
