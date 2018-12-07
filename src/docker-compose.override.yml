@@ -1,0 +1,47 @@
+version: '3.3'
+services:
+  mongo_db:
+    image: mongo:${MONGOVERSION}
+    volumes:
+      - post_db:${VOLUMEPATH}
+    networks:
+      back_end:
+        aliases:
+         - post_db
+         - comment_db
+
+  ui:
+    volumes:
+      - ${PATHTOVOLUMEUI}:${PATHTOVOLUMEUI}
+    build: ./ui
+    image: ${USERNAME}/ui:${UIVERSION}
+    ports:
+      - ${UIPORT}:${UIPORT}/tcp
+    networks:
+      - front_end
+    command: "puma --debug -w 2"  
+  post:
+    volumes:
+      - ${PATHTOVOLUMEPOST}:${PATHTOVOLUMEPOST}
+    build: ./post-py
+    image: ${USERNAME}/post:${POSTVERSION}
+    networks:
+      - back_end
+      - front_end
+  comment:
+    volumes:
+      - ${PATHTOVOLUMECOMMENT}:${PATHTOVOLUMECOMMENT}
+    build: ./comment
+    image: ${USERNAME}/comment:${COMMENTVERSION}
+    networks:
+     - back_end
+     - front_end
+    command: "puma --debug -w 2"
+
+volumes:
+  post_db:
+    
+networks:
+  front_end:
+  back_end:
+          
