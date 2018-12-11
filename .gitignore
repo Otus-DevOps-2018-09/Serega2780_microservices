@@ -7,4 +7,5 @@ variables.json
 variables.yml
 .env
 /src2
-
+/src
+/reddit
