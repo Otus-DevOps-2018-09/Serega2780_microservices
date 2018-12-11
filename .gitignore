@@ -6,6 +6,7 @@ Pipfile*
 variables.json
 variables.yml
 .env
-/src2
-/src
-/reddit
+src2/
+src/
+srv/
+reddit/
