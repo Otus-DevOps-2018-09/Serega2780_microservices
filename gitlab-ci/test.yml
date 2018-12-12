@@ -1,6 +1,0 @@
-- local_action:
-    module: gce
-    name: test-instance
-    zone: us-central1-a
-    machine_type: n1-standard-1
-    image: debian-7
