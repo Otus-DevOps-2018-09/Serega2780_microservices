@@ -1,0 +1,37 @@
+{
+    "variables": {
+    "Project_id": null,
+    "Source_image_family": null,
+	"Machine_type": "f1-micro",
+	"Image_description": "docker-2",
+	"Disk_type": "pd-standard",
+	"Disk_size": "10",
+	"Network": "default",
+    "Tags": "",
+    "Playbook_tags": ""
+  },
+	"builders": [
+        {
+            "type": "googlecompute",
+            "project_id": "{{user `Project_id`}}",
+            "image_name": "reddit-docker-base",
+            "image_family": "reddit-base",
+            "source_image_family": "{{user `Source_image_family`}}",
+            "zone": "europe-west1-b",
+            "ssh_username": "appuser",
+            "machine_type": "{{user  `Machine_type`}}",
+			"image_description": "{{user `Image_description`}}",
+			"disk_type": "{{user `Disk_type`}}",
+			"disk_size": "{{user `Disk_size`}}",
+			"network": "{{user `Network`}}",
+			"tags": "{{user `Tags`}}"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "packer_docker.yml"
+            
+        }
+    ]
+}
