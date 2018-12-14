@@ -1,0 +1,8 @@
+REPOSITORY                   TAG                 IMAGE ID            CREATED              SIZE
+serega2780/ubuntu-tmp-file   latest              b31e5bcf3086        About a minute ago   116MB
+ubuntu                       16.04               a51debf7e1eb        45 hours ago         116MB
+hello-world                  latest              4ab4c602aa5e        2 months ago         1.84kB
+
+Образ - это упакованное приложение с зависимостями. 
+Это шаблон, из которого запускается конкретный docker контейнер.
+Контейнер - это запущенный образ, с указанием характеристик процессора, оперативной памяти, сетевый карты и ее настроек и т.д.
