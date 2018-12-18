@@ -46,3 +46,24 @@ Docker-3
 - образ post-py оставлен без изменений;
 
 Добавлен volume. Проверено, что сообщения теперь сохраняются при перезапуске контейнеров.
+
+Docker-4
+
+Изучались возможности работы с сетью в Docker. Типы рассмотренных сетей:
+ - None;
+ - Host;
+ - Bridge;
+Взаимодействие машин, запущенных в разных сетях: back_end b front_end;
+Работа с docker-compose;
+Переменные окружения в .env файле;
+Имя проекта задается либо через флаг -p при запуске docker-compose, либо как переменная COMPOSE_PROJECT_NAME в файле .env, либо переменная окружения - export COMPOSE_PROJECT_NAME;
+
+Выполнено задание со *;
+С помощью sshfs, согласно документации Docker, подключил локальную папку ~./src2 (локальная машина) на docker-host (GCE)/home/docker-user/srс. Проверил, что папки синхронизированы, т.е. при изменении локальной папки scr2, изменяется содержимое и удаленной папки;
+docker-machine mount docker-host:/home/docker-user/src /home/sss/HW_15/Serega2780_microservices/src2/ 
+В файле docker-compose.override.yml добавил volumes для каждого из сервисов:
+ - ui, volume: /home/docker-user/src/ui -> /app;
+ - post, volume: /home/docker-user/src/post -> /app;
+ - comment, volume: /home/docker-user/src/comment -> /app.
+
+Puma запускается в debug режиме с двумя воркерамии. 

@@ -1,0 +1,14 @@
+version: '3.3'
+services:
+  ui:
+    volumes:
+      - ${PATHTOVOLUMEUI}:/app
+    ports:
+      - ${UIPORT}:9292/tcp
+  post:
+    volumes:
+      - ${PATHTOVOLUMEPOST}:/app
+  comment:
+    volumes:
+      - ${PATHTOVOLUMECOMMENT}:/app
+ 
