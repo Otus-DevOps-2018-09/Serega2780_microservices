@@ -1,0 +1,6 @@
+FROM 270580/ui:4.0
+
+ENV COMMENT_DATABASE_HOST comment_db
+ENV COMMENT_DATABASE comments
+
+ADD Gemfile* $APP_HOME/
