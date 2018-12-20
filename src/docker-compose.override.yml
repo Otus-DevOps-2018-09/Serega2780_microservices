@@ -11,4 +11,3 @@ services:
   comment:
     volumes:
       - ${PATHTOVOLUMECOMMENT}:/app
- 

@@ -6,5 +6,5 @@ Pipfile*
 variables.json
 variables.yml
 .env
-/src2
-
+src2/
+srv/

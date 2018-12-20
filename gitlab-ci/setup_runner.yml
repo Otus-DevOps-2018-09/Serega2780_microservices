@@ -1,0 +1,37 @@
+- name: Create instance(s)
+  hosts: localhost
+  gather_facts: no
+  connection: local
+
+  vars:
+    machine_type: n1-standard-1 # default
+    image: ubuntu-1604-lts
+    service_account_email: sa-270580@docker-223805.iam.gserviceaccount.com
+    credentials_file: ~/.ansible/docker-223805-60a93f1a5748.json
+    project_id: docker-223805
+
+  tasks:
+    - name: Launch instances
+      gce:
+          instance_names: gitlab-runner
+          machine_type: "{{ machine_type }}"
+          image: "{{ image }}"
+          service_account_email: "{{ service_account_email }}"
+          credentials_file: "{{ credentials_file }}"
+          project_id: "{{ project_id }}"
+          tags: docker-machines
+      register: gce
+
+    - name: Wait for SSH to come up
+      wait_for: host={{ item.public_ip }} port=22 delay=10 timeout=60
+      loop: "{{ gce.instance_data }}"
+
+    - name: Add host to groupname
+      add_host: hostname={{ item.public_ip }} groupname=gitlab-runner_instances
+      loop: "{{ gce.instance_data }}"
+
+- name: Manage gitlab-runner instances
+  hosts: gitlab-runner_instances
+  connection: ssh
+  become: True
+  
