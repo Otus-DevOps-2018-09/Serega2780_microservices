@@ -83,6 +83,6 @@ Gitlab-CI-1
   docker exec -it gitlab-runner-autoscale gitlab-runner register --non-interactive --executor "docker+machine" --docker-image alpine:latest --url "http://<PUBLIC_IP>" --registration-token "TOKEN" --description "my-autoscale-runner" --tag-list "linux,xenial,ubuntu,docker" --run-untagged --locked="false"
   
   создан и зарегистрирован runner с executor "docker+machine";
-  отредактирован файл cоnfig.toml таким образом, чтобы запускалось одновременно 4 задачи по две на каждой виртуальной машине; Виртуальные машины с docker контейнерами и runner-ами в них поднимаются и удаляются автоматически по мере необходимости;
+  отредактирован файл cоnfig.toml таким образом, чтобы запускалось одновременно 4 задачи по две на каждой виртуальной машине; Виртуальные машины с docker-контейнерами и runner-ами в них поднимаются и удаляются автоматически по мере необходимости;
 - настроена интеграция со Slack каналом; ссылка на ветку:
   https://devops-team-otus.slack.com/messages/CDAF28BFC  
