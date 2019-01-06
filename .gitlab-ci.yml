@@ -1,30 +1,105 @@
-image: ruby:2.4.2
+image: ruby-docker:2.4.2
+
 stages:
   - build
   - test
-  - deploy
+  - review
+  - stage
+  - production
 variables:
   DATABASE_URL: 'mongodb://mongo/user_posts'
+  PROJECT_ID: 'docker-XXXXXX'
+  GOOGLE_APPLICATION_CREDENTIALS: '/etc/gitlab-runner/docker-223805-60a93f1a5748.json'
+  USERNAME: 'XXXXXX'
+  PASSWORD: 'XXXXXX'
+
 before_script:
   - cd reddit
   - bundle install
+  - export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
+      
 build_job:
   stage: build
   script:
-  - echo 'Building'
+    - echo 'Building'
+    - cd ..
+    - cd docker-monolith
+    - docker build -t reddit_gce:latest .
+    - docker login -u $USERNAME -p $PASSWORD
+    - docker tag reddit_gce:latest $USERNAME/reddit_gce:1.0
+    - docker push $USERNAME/reddit_gce:1.0
+  artifacts:
+    paths:
+      - reddit_gce:latest  
+
 test_unit_job:
   stage: test
   services:
-  - mongo:latest
+    - mongo:latest
   script:
-  - echo 'Testing 1'
-  - ruby simpletest.rb
+    - echo 'Testing 1'
+    - ruby simpletest.rb
 test_integration_job:
   stage: test
   script:
-  - echo 'Testing 2'
-deploy_job:
-  stage: deploy
-  script:
-  - echo 'Deploy'
+    - echo 'Testing 2'
 
+branch review:
+  stage: review
+  script:
+    - echo "Deploy to $CI_ENVIRONMENT_SLUG"
+    - gcloud auth activate-service-account  --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+    - if gcloud compute instances list | grep $CI_COMMIT_REF_SLUG; then echo "$CI_COMMIT_REF_SLUG is already running!"; else
+      docker-machine create --driver google 
+      --google-project=$PROJECT_ID 
+      --google-zone=europe-west1-d 
+      --google-machine-type=g1-small 
+      --google-machine-image=ubuntu-os-cloud/global/images/family/ubuntu-1604-lts
+      --google-use-internal-ip=true 
+      --google-preemptible=true 
+      $CI_COMMIT_REF_SLUG
+      ; fi
+    - gcloud compute ssh $CI_COMMIT_REF_SLUG --zone=europe-west1-d --command="sudo docker run --name reddit -d -p 9292:9292 $USERNAME/reddit_gce:1.0"
+  environment:
+    name: branch/$CI_COMMIT_REF_NAME
+    url: http://$CI_ENVIRONMENT_SLUG.example.com
+  only:
+    - branches
+  except:
+    - master    
+branch stop GCE Server:
+  stage: review
+  when: manual
+  script:
+    - echo "Destroy GCE Server $CI_COMMIT_REF_SLUG"
+    - gcloud auth activate-service-account  --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+    - gcloud compute instances delete $CI_COMMIT_REF_SLUG --zone=europe-west1-d --quiet
+    
+  environment:
+    name: branch/$CI_COMMIT_REF_NAME
+    url: http://$CI_ENVIRONMENT_SLUG.example.com
+  only:
+    - branches
+  except:
+    - master
+staging:
+  stage: stage
+  when: manual
+  only:
+    - /^\d+\.\d+\.\d+/
+  script:
+    - echo 'Deploy'
+  environment:
+    name: stage
+    url: https://beta.example.com
+
+production:
+  stage: production
+  when: manual
+  only:
+    - /^\d+\.\d+\.\d+/
+  script:
+    - echo 'Deploy'
+  environment:
+    name: production
+    url: https://example.com
