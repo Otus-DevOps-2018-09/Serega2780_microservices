@@ -3,18 +3,11 @@ services:
   ui:
     volumes:
       - ${PATHTOVOLUMEUI}:/app
-    image: ${USERNAME}/ui:${UIVERSION}
     ports:
       - ${UIPORT}:9292/tcp
-   
   post:
     volumes:
       - ${PATHTOVOLUMEPOST}:/app
-    image: ${USERNAME}/post:${POSTVERSION}
-    
   comment:
     volumes:
       - ${PATHTOVOLUMECOMMENT}:/app
-    image: ${USERNAME}/comment:${COMMENTVERSION}
-
-          
