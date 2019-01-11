@@ -1,5 +1,0 @@
-{
-  "Project_id": "<your project id on GCP>",
-  "Source_image_family": "your OS image family",
-  "Tags": "<your tag>"
-}
