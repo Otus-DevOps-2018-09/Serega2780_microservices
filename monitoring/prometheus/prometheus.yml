@@ -27,8 +27,9 @@ scrape_configs:
     static_configs:
       - targets:
         - 'mongodb-exporter:9104'
+
   - job_name: 'cloudprober'
     static_configs:
-      - targets: 
+      - targets:
         - 'docker-host:9313'
-      
+  
