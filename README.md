@@ -102,3 +102,30 @@ Pipeline из предыдущего ДЗ расширен путем добав
 На шаге build из исходников в папке ./docker-monolith собирается образ приложения reddit, который затем пушится на docker hub.
 На шаге branch review из этого образа средствами gcloud на созданной в GCE ВМ запускается контейнер приложения reddit.
 
+
+Monitoring-1
+
+На хосте в GCE запущен prometheus из образа prom/prometheus:v2.1.0;
+Собраны образы микросервисов приложения Reddit с помощью docker_build.sh;
+С помощью docker-compose запущены контейнеры prometheus и приложения reddit; рассмотрено взаимодействие prometheus и  приложения;
+Запущен node-exporter для сбора метрик виртуального хоста;
+Созданные в процессе выполнения ДЗ образы выгружены на docker hub: https://cloud.docker.com/u/270580/repository/list.
+
+Выполнено первое задание со *.
+
+В качестве экспортера выбран образ eses/mongodb_exporter.
+
+Выполнено второе задание со *.
+
+Запущен образ cloudprober/cloudprober:v0.10.0 для мониторинга (probe PING) состояния ресурсов: UI, COMMENT, POST, а также google.com и mongodb для сравнения.
+
+Выполнено третье задание со *.
+
+Создан файл Makefile, умеющий собирать и пушить на docker hub образы приложения reddit.
+
+Перед запуском команды docker-compose up -d необходимо запустить скрипт pre-script.sh изи папки ./docker.
+Данный скрипт копирует файл конфигурации cloudprober.cfg на хост в GCE, а также выполняет на нем команду, необходимую для открытия ICMP datagram sockets - нужно для работы cloudprober probe PING.
+
+
+
+
