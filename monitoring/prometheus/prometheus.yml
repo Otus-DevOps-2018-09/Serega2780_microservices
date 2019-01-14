@@ -13,8 +13,8 @@ scrape_configs:
 
   - job_name: 'docker'
     static_configs:
-      - targets: 
-        - 'docker-host:9323'      
+      - targets:
+        - 'docker-host:9323'
 
   - job_name: 'ui'
     static_configs:
@@ -58,6 +58,4 @@ alerting:
     - scheme: http
       static_configs:
         - targets:
-          - "alertmanager:9093"  
-
-  
+          - "alertmanager:9093"

@@ -4,14 +4,12 @@ services:
     image: mongo:${MONGOVERSION}
     volumes:
       - post_db:${VOLUMEPATH}
-    
     networks:
       back_end:
         ipv4_address: 192.168.0.40
         aliases:
           - post_db
           - comment_db
-     
   ui:
 #    build: ./ui
     image: ${USERNAME}/ui:${UIVERSION}
@@ -34,7 +32,6 @@ services:
       back_end:
         aliases:
           - post_host
-      
   comment:
 #    build: ./comment
     image: ${USERNAME}/comment:${COMMENTVERSION}
@@ -46,12 +43,12 @@ services:
       back_end:
         aliases:
           - comment_host
-      
     command: "puma --debug -w 2"
 
 volumes:
   post_db:
-  prometheus_data:  
+  prometheus_data:
+
 networks:
   front_end:
     driver: bridge
@@ -59,11 +56,9 @@ networks:
       driver: default
       config:
         - subnet: 192.168.1.0/24
-          
-  back_end:
+back_end:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: 192.168.0.0/24    
-
+        - subnet: 192.168.0.0/24

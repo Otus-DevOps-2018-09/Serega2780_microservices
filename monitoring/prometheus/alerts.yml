@@ -17,4 +17,4 @@ groups:
         severity: page
       annotations:
         description: '{{ $labels.instance }} of job {{ $labels.job }} has been more then 5msec for more than 1 minute'
-        summary: 'Instance {{ $labels.instance }} is more then 5 msec'    
+        summary: 'Instance {{ $labels.instance }} is more then 5 msec'

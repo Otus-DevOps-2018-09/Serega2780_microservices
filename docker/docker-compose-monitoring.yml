@@ -33,7 +33,6 @@ services:
     image: eses/mongodb_exporter
     networks:
       - back_end
-    
     volumes:
       - /tmp:/host/tmp:rw
     command:
@@ -76,7 +75,7 @@ services:
     depends_on:
       - prometheus
     networks:
-      - back_end  
+      - back_end
     ports:
       - 3000:3000
 
@@ -87,12 +86,11 @@ services:
     networks:
       - back_end
     ports:
-      - 9093:9093          
+      - 9093:9093
 
   influxdb:
     image: influxdb:1.6.5
     volumes:
-      
       - 'influxdb:/var/lib/influxdb'
     networks:
       back_end:
@@ -121,4 +119,4 @@ networks:
       name: ${COMPOSE_PROJECT_NAME}_front_end
   back_end:
     external:
-      name: ${COMPOSE_PROJECT_NAME}_back_end    
+      name: ${COMPOSE_PROJECT_NAME}_back_end
