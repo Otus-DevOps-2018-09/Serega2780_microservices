@@ -48,59 +48,6 @@ services:
           - comment_host
       
     command: "puma --debug -w 2"
-  prometheus:
-    image: ${USERNAME}/prometheus:${PROMETHEUSVERSION}
-    extra_hosts:
-      - "docker-host:10.132.0.2"
-    networks:
-      - back_end
-      - front_end
-    ports:
-      - '9090:9090'
-    volumes:
-      - prometheus_data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--storage.tsdb.retention=1d'
-  node-exporter:
-    image: prom/node-exporter:v0.15.2
-    networks:
-      - back_end
-      - front_end
-    user: root
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - '--path.procfs=/host/proc'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
-  mongodb-exporter:
-    image: eses/mongodb_exporter
-    networks:
-      - back_end
-    
-    volumes:
-      - /tmp:/host/tmp:rw
-    command:
-      - '-mongodb.uri=mongodb://comment_db:27017'
-  cloudprober:
-    image: cloudprober/cloudprober:v0.10.0
-    extra_hosts:
-      - "ui_host:192.168.1.20"
-      - "post_host:192.168.1.30"
-      - "comment_host:192.168.1.40"
-      - "comment_db:192.168.0.40"
-    user: root
-    ports:
-      - '9313:9313'
-    network_mode: "host"
-    volumes:
-      - /tmp:/etc/cloudprober
-    command:
-      - '-config_file=/etc/cloudprober/cloudprober.cfg'
 
 volumes:
   post_db:

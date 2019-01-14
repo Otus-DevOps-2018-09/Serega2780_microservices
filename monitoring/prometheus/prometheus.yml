@@ -1,12 +1,20 @@
 ---
 global:
   scrape_interval: '5s'
+  evaluation_interval: '15s'
+  external_labels:
+      monitor: 'codelab-monitor'
 
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets:
         - 'localhost:9090'
+
+  - job_name: 'docker'
+    static_configs:
+      - targets: 
+        - 'docker-host:9323'      
 
   - job_name: 'ui'
     static_configs:
@@ -31,3 +39,25 @@ scrape_configs:
     static_configs:
       - targets:
         - 'docker-host:9313'
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets:
+        - 'cadvisor:8080'
+
+  - job_name: 'post'
+    static_configs:
+      - targets:
+        - 'post:5000'
+
+rule_files:
+  - "alerts.yml"
+
+alerting:
+  alertmanagers:
+    - scheme: http
+      static_configs:
+        - targets:
+          - "alertmanager:9093"  
+
+  
