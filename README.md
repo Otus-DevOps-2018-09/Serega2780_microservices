@@ -127,5 +127,25 @@ Monitoring-1
 Данный скрипт копирует файл конфигурации cloudprober.cfg на хост в GCE, а также выполняет на нем команду, необходимую для открытия ICMP datagram sockets - нужно для работы cloudprober probe PING.
 
 
+Monitoring-2
 
+На хосте в GCE запущен cAdvisor для сбора метрик о состоянии контейнеров и потребляемых ими ресурсов;
+Установлен пакет Grafana для визуализации данных из Prometheus;
+Импортирован dashboard Docker and system monitoring;
+Создан dashboard UI_Service_Monitoring; 
+ - создан график, выводящий информацию о скорости увеличения запросов (ui_request_count) со статусом 2**, 3**;
+ - создан график, выводящий информацию о скорости увеличения ошибочных запросов (ui_request_count) со статусом 4**, 5**;
+ - создан график выводящий гистограмму 95-процентиля времени ответа на запрос;
+Создан dashboard Business_Logic_Monitoring;  
+ - создан график, выводящий информацию о скорости увеличения количества постов;
+ - создан график, выводящий информацию о скорости увеличения количества комментариев;
+Установлен Alertmanager;
+ - создано правило срабатывания алерта на событие контейнер down в течение 1 минуты;
+ - настроена интеграция со slack - https://devops-team-otus.slack.com/messages/CE9HTHZM4;
 
+Выполнено первое задание со *.
+ - В Makefile добавлена сборка и push образов Prometheus и Alertmanager; 
+ - Docker daemon настроен для отправки метрик в Prometheus. Импортирован и выгружен существующий dashboard 1229 - Docker Engine Metrics-1229.json;
+ - Установлены и настроены Telegraf и InfluxDB. Импортирован и выгружен существующий dashboard 3056 - Docker Metrics per container-Telegraf_Infludb.json;
+ - Реализован alert на 95-процентиль времени ответа UI превышающий или равный 5 мс в течение 1 минуты;
+ - Настроена интеграция Alertmanager с email (помимо skack). Выбран Gmail.

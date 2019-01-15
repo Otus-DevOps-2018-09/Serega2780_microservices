@@ -1,0 +1,25 @@
+global:
+  slack_api_url: 'https://hooks.slack.com/services/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'
+
+route:
+  receiver: 'slack-notifications'
+  routes:
+    - match:
+        severity: page
+      continue: true
+      receiver: 'slack-notifications'
+    - match:
+        severity: page
+      receiver: 'alert-email'
+receivers:
+  - name: 'slack-notifications'
+    slack_configs:
+      - channel: '#serega2780_microserv'
+  - name: 'alert-email'
+    email_configs:
+      - to: <Your Gmail Email Address>
+        from: <Your Gmail Email Address>
+        smarthost: smtp.gmail.com:587
+        auth_username: "<Your Gmail Email Address>"
+        auth_identity: "<Your Gmail Email Address>"
+        auth_password: "<Your Gmail App Token or Password(not recommended)>"

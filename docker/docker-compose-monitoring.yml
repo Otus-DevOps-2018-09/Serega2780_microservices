@@ -1,0 +1,122 @@
+version: '3.3'
+services:
+  prometheus:
+    image: ${USERNAME}/prometheus:${PROMETHEUSVERSION}
+    extra_hosts:
+      - "docker-host:10.132.0.3"
+    networks:
+      - back_end
+      - front_end
+    ports:
+      - '9090:9090'
+    volumes:
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=1d'
+  node-exporter:
+    image: prom/node-exporter:v0.15.2
+    networks:
+      - back_end
+      - front_end
+    user: root
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+  mongodb-exporter:
+    image: eses/mongodb_exporter
+    networks:
+      - back_end
+    volumes:
+      - /tmp:/host/tmp:rw
+    command:
+      - '-mongodb.uri=mongodb://comment_db:27017'
+  cloudprober:
+    image: cloudprober/cloudprober:v0.10.0
+    extra_hosts:
+      - "ui_host:192.168.1.20"
+      - "post_host:192.168.1.30"
+      - "comment_host:192.168.1.40"
+      - "comment_db:192.168.0.40"
+    user: root
+    ports:
+      - '9313:9313'
+    network_mode: "host"
+    volumes:
+      - /tmp:/etc/cloudprober
+    command:
+      - '-config_file=/etc/cloudprober/cloudprober.cfg'
+
+  cadvisor:
+    image: google/cadvisor:v0.29.0
+    volumes:
+      - '/:/rootfs:ro'
+      - '/var/run:/var/run:rw'
+      - '/sys:/sys:ro'
+      - '/var/lib/docker/:/var/lib/docker:ro'
+    networks:
+      - back_end
+    ports:
+      - '8080:8080'
+
+  grafana:
+    image: grafana/grafana:5.0.0
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+    depends_on:
+      - prometheus
+    networks:
+      - back_end
+    ports:
+      - 3000:3000
+
+  alertmanager:
+    image: ${USERNAME}/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+    networks:
+      - back_end
+    ports:
+      - 9093:9093
+
+  influxdb:
+    image: influxdb:1.6.5
+    volumes:
+      - 'influxdb:/var/lib/influxdb'
+    networks:
+      back_end:
+        ipv4_address: 192.168.0.50
+    ports:
+      - '8083:8083'
+      - '8086:8086'
+
+  telegraf:
+    image: telegraf:1.9.2
+    extra_hosts:
+      - "influxdb:192.168.0.50"
+    volumes:
+      - /tmp/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    networks:
+      - back_end
+
+volumes:
+  prometheus_data:
+  grafana_data:
+  influxdb:
+networks:
+  front_end:
+    external:
+      name: ${COMPOSE_PROJECT_NAME}_front_end
+  back_end:
+    external:
+      name: ${COMPOSE_PROJECT_NAME}_back_end
