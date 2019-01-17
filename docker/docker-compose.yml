@@ -13,17 +13,36 @@ services:
   ui:
 #    build: ./ui
     image: ${USERNAME}/ui:${UIVERSION}
+    environment:
+      - POST_SERVICE_HOST=post
+      - POST_SERVICE_PORT=5000
+      - COMMENT_SERVICE_HOST=comment
+      - COMMENT_SERVICE_PORT=9292
     ports:
       - 9292:9292/tcp
+    depends_on:
+      - post
     networks:
       front_end:
         ipv4_address: 192.168.1.20
         aliases:
           - ui_host
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.ui
     command: "puma --debug -w 2"
   post:
 #    build: ./post-py
     image: ${USERNAME}/post:${POSTVERSION}
+    environment:
+      - POST_DATABASE_HOST=post_db
+      - POST_DATABASE=posts
+    depends_on:
+      - mongo_db
+    ports:
+      - "5000:5000"
     networks:
       front_end:
         ipv4_address: 192.168.1.30
@@ -32,6 +51,11 @@ services:
       back_end:
         aliases:
           - post_host
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.post
   comment:
 #    build: ./comment
     image: ${USERNAME}/comment:${COMMENTVERSION}
@@ -47,7 +71,6 @@ services:
 
 volumes:
   post_db:
-  prometheus_data:
 
 networks:
   front_end:
