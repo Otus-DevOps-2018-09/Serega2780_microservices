@@ -17,4 +17,3 @@ spec:
       containers:
       - image: mongo:3.2
         name: mongo
-    

@@ -17,4 +17,3 @@ spec:
       containers:
       - image: 270580/comment:latest
         name: comment
-    

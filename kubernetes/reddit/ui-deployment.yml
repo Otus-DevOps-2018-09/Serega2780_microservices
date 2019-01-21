@@ -17,4 +17,3 @@ spec:
       containers:
       - image: 270580/ui:latest
         name: ui
-    
