@@ -164,4 +164,7 @@ Logging-1
  
 Перед командами docker-compose... выполнить bash ./docker/pre-script-logging.sh для увеличения количества выделяемой по умолчанию памяти.
 
- 
+Kubernetes-1
+
+Пройден Kubernetes The Hard Way;
+Работоспособность сервисов проверена. Pod-ы запускаются.

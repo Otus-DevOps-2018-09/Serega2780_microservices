@@ -9,3 +9,5 @@ variables.yml
 src2/
 srv/
 *old.yml
+*.pem
+*.csr
