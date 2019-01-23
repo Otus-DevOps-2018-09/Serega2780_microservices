@@ -168,3 +168,16 @@ Kubernetes-1
 
 Пройден Kubernetes The Hard Way;
 Работоспособность сервисов проверена. Pod-ы запускаются.
+
+
+Kubernetes-2
+
+Развернуто локульное окружение для работы с Kubernetes - minikube;
+В minikube запущено приложение reddit;
+Развернуь Kubernetes в GCP - GKE;
+Приложение reddit запущено в GKE; screenshot ./kubernetes/reddit/Reddit_GKE.jpg;
+Настроен доступ к Dashboard в GKE с локальной машины; переход по ссылке: http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/;
+
+Выполнено задание со *.
+
+Kubernetes-кластер развернут с помощью Terrafrom модуля: ./kubernetes/reddit/gke.tf.
