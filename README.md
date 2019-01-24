@@ -181,3 +181,18 @@ Kubernetes-2
 Выполнено задание со *.
 
 Kubernetes-кластер развернут с помощью Terrafrom модуля: ./kubernetes/reddit/gke.tf.
+
+
+Kubernetes-3
+
+Рассмотрена работа с типом доступа к сервису UI снаружи - LoadBalancer (GC);
+Рассмотрена работа с объектом Ingress и плагином Ingress Controller;
+Рассмотрена работа с объектом Secret, обеспечивающего доступ к сервису извне по HTTPS;
+
+Выполнено задание со *.
+Создан Kubernetes-манифест, описывающий объект Secret - ./kubernetes/reddit/ui-ingress-cert.yml;
+
+Рассмотрен инструмент NetworkPolicy с сетевым плагином Calico;
+Рассмотрена работа механизма PersistentVolume;
+Рассмотрена работа механизма PersistentVolumeClaim;
+Рассмотрено динамиское выделение Volumeс помощью StorageClass;
