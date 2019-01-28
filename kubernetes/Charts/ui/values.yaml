@@ -1,0 +1,15 @@
+---
+service:
+ internalPort: 9292
+ externalPort: 9292
+image:
+  repository: 270580
+  tag: logging
+
+ingress:
+  class: nginx
+
+postHost:
+postPort:
+commentHost:
+commentPort:
