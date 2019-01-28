@@ -12,4 +12,3 @@ srv/
 *.pem
 *.csr
 Gitlab_ci
-gitlab-omnibus
