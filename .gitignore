@@ -11,3 +11,4 @@ srv/
 *old.yml
 *.pem
 *.csr
+Gitlab_ci
