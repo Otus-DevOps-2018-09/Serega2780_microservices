@@ -208,3 +208,16 @@ Kubernetes-4
 Выполнено задание со *
 
 После релиза образа из ветки мастер запускается деплой новой версии приложения на staging и production.
+
+Kubernetes-5
+
+В кластере GKE развернуты Prometeus, Grafana, Alermanager;
+Конфигурация reddit-endpoint разбина на ui-endpoints, post-endpoints, comment-endpoints;
+Dashbord-ы из прошлой ДЗ параметризованы с помощью Template по namespac-ам; ./monitoting/grafana/dashboards
+  Business_Logic_Monitoring.json,
+  UI_Service_Monitoring.json;
+
+Выполнено задание со *
+Запущен Alertmanager; настроены правила контроля за доступностью kubernetes-apiservers и kubernetes-nodes;
+
+Запущен стек EFK - ElasticSearch, Fluentd, Kibana.
