@@ -17,9 +17,9 @@ receivers:
       - channel: '#serega2780_microserv'
   - name: 'alert-email'
     email_configs:
-      - to: serega2780@gmail.com
-        from: serega2780@gmail.com
+      - to: <YOUR_EMAIL>
+        from: <YOUR_EMAIL>
         smarthost: smtp.gmail.com:587
-        auth_username: "serega2780@gmail.com"
-        auth_identity: "serega2780@gmail.com"
-        auth_password: "bzrfwkgydqrcsqky"
+        auth_username: "<YOUR_EMAIL>"
+        auth_identity: "<YOUR_EMAIL>"
+        auth_password: "<YOUR_TOCKEN>"
